@@ -2,12 +2,10 @@ on:
   pull_request:
     branches:
       - master
-
   push:
     branches:
       - master
       - develop
-
 name: "Build and Deploy"
 jobs:
   build:
@@ -25,7 +23,7 @@ jobs:
       - run: flutter test
       - run: flutter build apk --debug --split-per-abi
       - name: Push to Release
-      - uses: ncipollo/release-action@v1
+        uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/apk/debug/*"
           tag: v1.0.${{ github.run_number }}
