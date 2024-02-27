@@ -21,9 +21,16 @@ jobs:
           flutter-version: '3.13.9'
       - run: flutter pub get
       - run: flutter build apk --target=lib/app/main.dart --debug --split-per-abi
+      - run: |
+          flutter build ios --no-codesign
+          cd build/ios/iphoneos
+          mkdir Payload
+          ls -s ../Runner.app
+          cd ..
+          zip -r app.ipa Payload
       - name: Push to Release
         uses: ncipollo/release-action@v1
         with:
-          artifacts: "build/app/outputs/apk/debug/*"
+          artifacts: "build/app/outputs/apk/debug/*,build/ios/iphoneos/app.ipa"
           tag: v1.0.${{ github.run_number }}
           token: ${{ secrets.TOKEN }}
